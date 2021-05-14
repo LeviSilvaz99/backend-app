@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,27 +22,29 @@ public class PessoaResource {
     }
 
     @PostMapping
-    public Pessoa cadastrarPessoa(@RequestBody  Pessoa pessoa){
+    public Pessoa cadastrarPessoa(@RequestBody @Valid Pessoa pessoa){
         return pessoaRepository.save(pessoa);
     }
 
     @PutMapping("/{codigo}")
-    public Pessoa atualizar(@PathVariable ("codigo") Long codigo, @RequestBody Pessoa pessoa){
+    public Pessoa atualizar(@PathVariable ("codigo") Long codigo, @RequestBody @Valid Pessoa pessoa){
         return pessoaRepository.findById(codigo).map(
                 record -> {
                     record.setCpf(pessoa.getCpf());
-                    record.setDataNascimento(pessoa.getDataNascimento());
                     record.setEmail(pessoa.getEmail());
-                    record.setIdade(pessoa.getIdade());
                     record.setNome(pessoa.getNome());
-                    record.setTelefone(pessoa.getTelefone());
                     Pessoa pessoaAtualizada = pessoaRepository.save(pessoa);
                     return pessoaRepository.save(record);
         }).orElse(null);
     }
 
-    @GetMapping("/{codigo}")
+    @GetMapping("/pessoas/{codigo}")
     public Pessoa buscarPeloId(@PathVariable Long codigo){
         return pessoaRepository.findById(codigo).orElse(null);
+    }
+
+    @DeleteMapping("/pessoas/{codigo}")
+    public void deletaProduto(@RequestBody Pessoa pessoa){
+        pessoaRepository.delete(pessoa);
     }
 }
