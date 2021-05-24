@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pessoas")
+@RequestMapping("api/pessoas")
 public class PessoaResource {
 
     @Autowired //vai injetar a depencia pra eu conseguir acessar o elemento repository
