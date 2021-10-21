@@ -1,11 +1,8 @@
 package com.levisilva.security.jwt;
 
-import com.levisilva.BackendApplication;
-import com.levisilva.domain.Usuario;
+import com.levisilva.domain.Login;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -22,14 +19,14 @@ public class JwtService {
     @Value("${security.jwt.chave-assinatura}")
     private String chaveAssinatura;
 
-    public String gerarToken(Usuario usuario){
+    public String gerarToken(Login login){
         long expString = Long.valueOf(expiracao);
         LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
         Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
         Date data = Date.from(instant);
         return Jwts
                 .builder()
-                .setSubject(usuario.getLogin())
+                .setSubject(login.getLogin())
                 .setExpiration(data)
                 .signWith(SignatureAlgorithm.HS512, chaveAssinatura)
                 .compact();
@@ -61,18 +58,4 @@ public class JwtService {
     public String obterLoginUsuario(String token) throws ExpiredJwtException{
         return (String) obterClaims(token).getSubject();
     }
-
-    public static void main(String[] args){
-        ConfigurableApplicationContext contexto = SpringApplication.run(BackendApplication.class);
-        JwtService service = contexto.getBean(JwtService.class);
-        Usuario usuario = Usuario.builder().login("fulano").build();
-        String token = service.gerarToken(usuario);
-        System.out.println(token);
-
-        boolean isTokenValido = service.tokenValido(token);
-        System.out.println("TOKEN VALIDO:" + isTokenValido);
-
-        System.out.println(service.obterLoginUsuario(token));
-    }
-
 }

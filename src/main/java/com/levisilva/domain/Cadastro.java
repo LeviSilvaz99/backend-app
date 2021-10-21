@@ -8,8 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity
-@Table(name = "pessoa")
-public class Pessoa {
+public class Cadastro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;

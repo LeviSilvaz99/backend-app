@@ -1,6 +1,6 @@
-package com.levisilva.resources;
+package com.levisilva.controllers;
 
-import com.levisilva.domain.Usuario;
+import com.levisilva.domain.Login;
 import com.levisilva.dto.CredenciaisDTO;
 import com.levisilva.dto.TokenDTO;
 import com.levisilva.exception.SenhaInvalidaException;
@@ -17,9 +17,9 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("api/usuarios")
+@RequestMapping("/login")
 @RequiredArgsConstructor
-public class UsuarioResource {
+public class LoginController {
 
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
@@ -27,21 +27,21 @@ public class UsuarioResource {
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Usuario salvar(@RequestBody @Valid Usuario usuario){
-        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
-        usuario.setSenha((senhaCriptografada));
-        return usuarioService.salvar(usuario);
+    public Login salvar(@RequestBody @Valid Login login){
+        String senhaCriptografada = passwordEncoder.encode(login.getSenha());
+        login.setSenha((senhaCriptografada));
+        return usuarioService.salvar(login);
     }
 
     @PostMapping("/auth")
     public TokenDTO autenticar(@RequestBody CredenciaisDTO credenciais){
         try{
-            Usuario usuario = Usuario.builder()
+            Login login = Login.builder()
                     .login(credenciais.getLogin())
                     .senha(credenciais.getSenha()).build();
-            UserDetails usuarioAutenticado = usuarioService.autenticar(usuario);
-            String token = jwtService.gerarToken(usuario);
-            return new TokenDTO(usuario.getLogin(), token);
+            UserDetails usuarioAutenticado = usuarioService.autenticar(login);
+            String token = jwtService.gerarToken(login);
+            return new TokenDTO(login.getLogin(), token);
         }catch (UsernameNotFoundException | SenhaInvalidaException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }

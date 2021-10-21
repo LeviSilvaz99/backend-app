@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    image: levisilvaz99/backend-app:v1
+    container_name: backend-app
+    networks:
+      - aplication-login
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=postgres-db
+    ports:
+      - "5432:5432"
+    networks:
+      - aplication-login
+    volumes:
+      - pgdata:/var/lib/postgres/data/
+
+networks:
+  aplication-login:
+    driver: bridge
+
+volumes:
+  pgdata:
