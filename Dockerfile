@@ -1,5 +1,9 @@
-FROM openjdk
+FROM adoptopenjdk/openjdk11:alpine-jre
+
 LABEL maintainer="levisilvaz99 <andrei_e.n.d@hotmail.com>"
-WORKDIR /app
-COPY target/demo-0.0.1-SNAPSHOT.jar /app/backend-api.jar
+
+COPY target/demo-0.0.1-SNAPSHOT.jar backend-api.jar
+
+CMD ["java", "-jar", "backend-api.jar"]
+
 EXPOSE 8080
