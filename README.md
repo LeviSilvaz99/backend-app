@@ -1,2 +1,4 @@
-# evaccine
-aplicação com spring boot - react - postgres, para acompanhar vacinas
+# BACKEND APP
+
+- APP COM SPRING BOOT SECURITY E DOCKER 
+- AUTENTICACAO E CADASTRO DE USUARIOS
