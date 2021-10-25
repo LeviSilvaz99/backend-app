@@ -18,8 +18,8 @@ services:
     image: postgres
     container_name: postgres
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_USER=vvhbifwchrsmkf
+      - POSTGRES_PASSWORD=b092dc03a7cd54260b8fc1935bd58cdbf26d8a59b78977ff4cd8c2efd504c2f0
       - POSTGRES_DB=postgres-db
     ports:
       - "5432:5432"
