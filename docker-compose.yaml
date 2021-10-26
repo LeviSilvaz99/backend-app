@@ -18,6 +18,7 @@ services:
     image: postgres
     container_name: postgres
     environment:
+      - POSTGRES_URL=jdbc:postgresql://ec2-67-202-36-228.compute-1.amazonaws.com:5432/d8eqg7d4d8isf8
       - POSTGRES_USER=vvhbifwchrsmkf
       - POSTGRES_PASSWORD=b092dc03a7cd54260b8fc1935bd58cdbf26d8a59b78977ff4cd8c2efd504c2f0
       - POSTGRES_DB=postgres-db
